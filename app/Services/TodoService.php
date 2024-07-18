@@ -33,7 +33,7 @@ class TodoService
         return $this->todoRepository->update($id, $data);
     }
 
-    public function deleteTask($id)
+    public function deleteTodo($id)
     {
         return $this->todoRepository->delete($id);
     }

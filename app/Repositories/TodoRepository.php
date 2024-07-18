@@ -23,25 +23,6 @@ class TodoRepository
 
     public function create(array $data)
     {
-        // $todoData = ["user_id" => Auth::user()->id,"content" => $data['content'] ,"due_date" => $data['due_date'] ];
-        // $todo =Todo::create($todoData);
-        // if($data['categoryName']){
-        //     $category =  Category::create($data['categoryName']);
-        //          //create CategoryTask
-        //     CategoryTask::create([
-        //     'todo_id' =>  $todo->id,
-        //     'category_id' => $category->id,
-        //     ]);
-        // }
-        // if($data['categoryId']){
-        //     CategoryTask::create([
-        //     'todo_id' =>  $todo->id,
-        //     'category_id' => $data['categoryId'],
-        //     ]);
-        // }
-
-
-        // return  $todo;
         return  Todo::create($data);;
     }
 
@@ -60,7 +41,7 @@ class TodoRepository
     }
     public function createCategoryName(array $data)
     {
-       
+
         return  Category::create($data);;
     }
     public function createCategoryId(array $data)

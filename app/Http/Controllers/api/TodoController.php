@@ -165,10 +165,12 @@ class TodoController extends Controller
             return response()->json(['message' => 'تسک یافت نشد.'], 404);
         }
 
-        // حذف todo
-        $todo->delete();
+        $todo = $this->todoService->deleteTodo($todo->id);
 
-        return response()->json(['message' => 'تسک با موفقیت حذف شد.']);
+        // // حذف todo
+      
+        return $this->successResponse(new BrandResource($todo), 200);
+
     }
 
 
