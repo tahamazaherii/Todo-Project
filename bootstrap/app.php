@@ -24,36 +24,36 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
 
-        $exceptions->renderable(function (NotFoundHttpException $exceptions) {
-            return response()->json([
-                'message' => 'Record not found.',
-                'error' => $exceptions->getMessage()
-            ], 404);
-        });
-        $exceptions->renderable(function (ModelNotFoundException $exceptions) {
-            return response()->json([
-                'message' => 'Record not found.',
-                'error' => $exceptions->getMessage()
-            ], 404);
-        });
-        $exceptions->renderable(function (QueryException $exceptions) {
-            return response()->json([
-                'message' => 'server error.',
-                'error' => $exceptions->getMessage()
-            ], 500);
-        });
-        $exceptions->renderable(function (MethodNotAllowedHttpException $exceptions) {
-            return response()->json([
-                'message' => 'server error.',
-                'error' => $exceptions->getMessage()
-            ], 500);
-        });
-        $exceptions->renderable(function (RelationNotFoundException $exceptions) {
-            return response()->json([
-                'message' => 'server error.',
-                'error' => $exceptions->getMessage()
-            ], 500);
-        });
+        // $exceptions->renderable(function (NotFoundHttpException $exceptions) {
+        //     return response()->json([
+        //         'message' => 'Record not found.',
+        //         'error' => $exceptions->getMessage()
+        //     ], 404);
+        // });
+        // $exceptions->renderable(function (ModelNotFoundException $exceptions) {
+        //     return response()->json([
+        //         'message' => 'Record not found.',
+        //         'error' => $exceptions->getMessage()
+        //     ], 404);
+        // });
+        // $exceptions->renderable(function (QueryException $exceptions) {
+        //     return response()->json([
+        //         'message' => 'server error.',
+        //         'error' => $exceptions->getMessage()
+        //     ], 500);
+        // });
+        // $exceptions->renderable(function (MethodNotAllowedHttpException $exceptions) {
+        //     return response()->json([
+        //         'message' => 'server error.',
+        //         'error' => $exceptions->getMessage()
+        //     ], 500);
+        // });
+        // $exceptions->renderable(function (RelationNotFoundException $exceptions) {
+        //     return response()->json([
+        //         'message' => 'server error.',
+        //         'error' => $exceptions->getMessage()
+        //     ], 500);
+        // });
 
 
     })->create();

@@ -26,7 +26,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::apiResource('todos', TodoController::class); // apiResource todo
 
+
     Route::get('/showFinishStatus' , [TodoController::class , 'showFinishStatus']);//برای نمایش همه ی فعالیت های که انجام شده هست
 
     Route::put('/ChangeStatus/{todo}', [TodoController::class, 'ChangeStatus']); //برای اپدیت کاری که انجام داده هست
 });
+
+
+

@@ -7,22 +7,33 @@ use App\Models\Category;
 use App\Models\CategoryTask;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use App\Services\TodoService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TodoController extends Controller
 {
     use ApiResponser;
+
+
+        protected $todoService;
+
+        public function __construct(TodoService $todoService)
+        {
+            $this->todoService = $todoService;
+        }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-        $todos = Auth::user()->todos()->with('categories')->where('status', 0)->get();
-        return response()->json($todos);
+        $todos = $this->todoService->getAllTodos();
+        return $this->successResponse(new TodoResource($todos));
+
     }
 
     /**
@@ -50,38 +61,23 @@ class TodoController extends Controller
         }
 
 
-        DB::beginTransaction();
-        //create todo
-        $todo = Todo::create([
-            'user_id' =>  Auth::user()->id,
-            'content' => $request->content,
-            'due_date' => $request->due_date,
-        ]);
+        $data =["user_id" => Auth::user()->id];
+        $data += $request->only(['content', 'due_date' ]);
+        $todo = $this->todoService->createTodo($data);
 
         if($request->categoryName){
-            //create category with categoryName
-            $category = Category::create([
-                'name' => $request->categoryName,
-            ]);
+            $data = [ "name" => $request->categoryName];
+            $category = $this->todoService->createCategory($data);
 
-             //create CategoryTask
-            CategoryTask::create([
-            'todo_id' =>  $todo->id,
-            'category_id' => $category->id,
-            ]);
+            $data = [ "category_id" => $category->id ,  "todo_id" => $todo->id];
+            $categoryTask = $this->todoService->createCategoryTask($data);
+        }elseif($request->categoryId){
+            $data = [  "category_id" =>$request->categoryId , "todo_id" => $todo->id];
+            $categoryTask = $this->todoService->createCategoryTask($data);
         }
 
-        if($request->categoryId){
-            //create CategoryTask with category_id
-            CategoryTask::create([
-                'todo_id' =>  $todo->id,
-                'category_id' => $request->categoryId,
-                ]);
-        }
 
-        DB::commit();
-
-        return response()->json(['message' => 'تسک با موفقیت اضافه شد.', 'todo' => $todo]);
+        return $this->successResponse(new TodoResource($todo), 201);
 
     }
 
@@ -90,9 +86,14 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
-        $todo->load('categories');
 
-        return response()->json(['todo' => $todo]);
+        $todo = $this->todoService->getTodoById($todo->id);
+        if ($todo) {
+            return $this->successResponse(new TodoResource($todo));
+        }else{
+
+        }
+
 
     }
 
